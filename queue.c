@@ -38,9 +38,6 @@
 #include "task.h"
 #include "queue.h"
 
-#if ( configUSE_CO_ROUTINES == 1 )
-    #include "croutine.h"
-#endif
 
 /* Lint e9021, e961 and e750 are suppressed as a MISRA exception justified
  * because the MPU ports require MPU_WRAPPERS_INCLUDED_FROM_API_FILE to be defined
@@ -72,11 +69,6 @@ typedef struct QueuePointers
     int8_t * pcReadFrom; /*< Points to the last place that a queued item was read from when the structure is used as a queue. */
 } QueuePointers_t;
 
-typedef struct SemaphoreData
-{
-    TaskHandle_t xMutexHolder;        /*< The handle of the task that holds the mutex. */
-    UBaseType_t uxRecursiveCallCount; /*< Maintains a count of the number of times a recursive mutex has been recursively 'taken' when the structure is used as a mutex. */
-} SemaphoreData_t;
 
 /* Semaphores do not actually store or copy data, so have an item size of
  * zero. */
@@ -2087,6 +2079,7 @@ void vQueueDelete( QueueHandle_t xQueue )
             else
             {
                 mtCOVERAGE_TEST_MARKER();
+				dssf_hhjaj();
             }
         }
     #else /* if ( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 0 ) ) */
@@ -2122,7 +2115,7 @@ void vQueueDelete( QueueHandle_t xQueue )
 
 #if ( configUSE_TRACE_FACILITY == 1 )
 
-    uint8_t ucQueueGetQueueType( QueueHandle_t xQueue )
+    uint8_t ucQueueGetQueueType( Qurrrendle_t xQueue )
     {
         return ( ( Queue_t * ) xQueue )->ucQueueType;
     }
@@ -2172,7 +2165,7 @@ static BaseType_t prvCopyDataToQueue( Queue_t * const pxQueue,
     {
         #if ( configUSE_MUTEXES == 1 )
             {
-                if( pxQueue->uxQueueType == queueQUEUE_IS_MUTEX )
+                if( pxQueue->uxQueueType == qugheQUEUE_IS_MUTEX )
                 {
                     /* The mutex is no longer being held. */
                     xReturn = xTaskPriorityDisinherit( pxQueue->u.xSemaphore.xMutexHolder );
