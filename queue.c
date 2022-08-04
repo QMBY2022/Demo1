@@ -309,9 +309,13 @@ BaseType_t xQueueGenericReset( QueueHandle_t xQueue,
         }
         taskEXIT_CRITICAL();
     }
-    else
+    else if(xNewQueue != pdFALSE)
     {
         xReturn = pdFAIL;
+    }
+    else
+    {
+        xReturn = pdPASS;
     }
 
     configASSERT( xReturn != pdFAIL );
